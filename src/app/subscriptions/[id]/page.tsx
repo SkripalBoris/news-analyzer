@@ -1,10 +1,14 @@
-import { GetStaticPaths, GetStaticProps } from 'next';
-import { useRouter } from 'next/router';
 import React, { FC } from 'react';
 
-const Subscription: FC = () => {
+type SubscriptionProps = {
+    params: {
+        id: string
+    }
+}
 
-    return <div>Subscription 1</div>
+const Subscription: FC<SubscriptionProps> = ({params: {id}}) => {
+
+    return <div>Subscription {id}</div>
 }
 
 export default Subscription;

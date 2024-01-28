@@ -1,10 +1,9 @@
+import { subscriptions } from '@/data'
+
 export const resolvers = {
     Query: {
         subscriptions: async () => {
-            return [
-                {id: '1', title: 'asd'},
-                {id: '2', title: '1232'}
-            ]
+            return subscriptions
         }
     }
 }

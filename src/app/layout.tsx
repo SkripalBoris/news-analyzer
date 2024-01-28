@@ -1,8 +1,5 @@
 import * as React from 'react';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
-import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import theme from '@/theme';
 import { Metadata } from 'next';
 import { Providers } from '@/components/providers';
 
@@ -20,12 +17,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <React.StrictMode>
-          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-            <ThemeProvider theme={theme}>
+            <Providers>
               <CssBaseline />
-              <Providers>{children}</Providers>
-            </ThemeProvider>
-          </AppRouterCacheProvider>
+              {children}
+            </Providers>
         </React.StrictMode>
       </body>
     </html>
