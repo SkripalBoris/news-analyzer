@@ -1,5 +1,5 @@
 "use client";
-import { Badge, Button, Chip, Container, Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import {  Button, Chip, Container, Skeleton, Typography } from '@mui/material';
 import React, { FC, useMemo, useState } from 'react';
 import NextLink from 'next/link';
 import { useQuery } from '@apollo/client';
