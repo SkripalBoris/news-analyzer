@@ -4,6 +4,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from '@/theme';
 import { Metadata } from 'next';
+import { Providers } from '@/components/providers';
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,7 +23,7 @@ export default function RootLayout({
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <ThemeProvider theme={theme}>
               <CssBaseline />
-              {children}
+              <Providers>{children}</Providers>
             </ThemeProvider>
           </AppRouterCacheProvider>
         </React.StrictMode>

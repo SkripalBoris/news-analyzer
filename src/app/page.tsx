@@ -1,6 +1,4 @@
-import Image from "next/image";
 import { Container, Box, Typography, Card, CardContent, CardActions, Button } from '@mui/material';
-import Link from '@mui/material/Link';
 import NextLink from 'next/link';
 
 export default function Home() {
