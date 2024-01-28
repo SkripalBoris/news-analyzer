@@ -1,66 +1,65 @@
 "use client";
-import { Badge, Button, Chip, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import React, { FC } from 'react';
+import { Badge, Button, Chip, Container, Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import React, { FC, useMemo, useState } from 'react';
 import NextLink from 'next/link';
 import { useQuery } from '@apollo/client';
 import { GET_SUBSCRIPTIONS, GetSubscriptionsQueryType } from '@/graphql/queries/subscription';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { SubscriptionsList } from './subscriptions-list';
+import { AddSubscriptionModal } from './add-subscription-modal';
 
 const Subscriptions: FC = () => {
     const { data, loading, error } = useQuery<GetSubscriptionsQueryType>(GET_SUBSCRIPTIONS)
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
-    if (loading) {
-        return <Container>
-            <Typography>Loading subscriptions list...</Typography>
-        </Container>
-    }
+    const preparedData = useMemo(() => {
+        if (error) {
+            return undefined;
+        }
 
-    if (error || !data) {
+        if (loading) {
+            return new Array(5).fill(0).map((_, index) => ({
+                id: index.toString(),
+                title: <Skeleton variant='rounded' height={20} width={200} />,
+                status: <Skeleton variant='rounded' height={20} width={80} />,
+                actions: <Skeleton variant='rounded' height={20} width={120} />
+            }))
+        }
+
+        return data?.subscriptions.map((item) => ({
+            id: item.id,
+            title: item.title,
+            status: <Chip color={item.status === 'enabled' ? 'success' : 'default'} label={item.status} />,
+            actions: <Button LinkComponent={NextLink} href={`/subscriptions/${item.id}/`}>Open</Button>
+        }))
+    }, [data, loading, error])
+
+    if (!preparedData) {
         return <Container>
             <Typography>Something went wrong...</Typography>
         </Container>
     }
 
     return (
+        <>
         <Grid2 container direction='column' gap={2} margin={4}>
             <Grid2 container direction='row'>
                 <Grid2 xs={10}>
                     <Typography variant='h2' component='h1'>Subscriptions list</Typography>
                 </Grid2>
                 <Grid2 xs={2} container alignContent='end' alignItems='end'>
-                    <Button>Add subscription</Button>
+                    <Button onClick={() => setIsModalOpen(true)}>Add subscription</Button>
                 </Grid2>
             </Grid2>
             <Grid2>
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="Subscriptions list">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Subscription Title</TableCell>
-                                <TableCell>Status</TableCell>
-                                <TableCell></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {data.subscriptions.map((item) => (
-                                <TableRow
-                                    key={item.id}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                >
-                                    <TableCell scope="row">
-                                        {item.title}
-                                    </TableCell>
-                                    <TableCell>
-                                        <Chip color={item.status === 'enabled' ? 'success' : 'default'} label={item.status} />
-                                    </TableCell>
-                                    <TableCell align="right"><Button LinkComponent={NextLink} href={`/subscriptions/${item.id}/`}>Open</Button></TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                <SubscriptionsList items={preparedData} />
             </Grid2>
         </Grid2>
+        <AddSubscriptionModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            />
+        </>
     );
 }
 

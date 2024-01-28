@@ -9,4 +9,8 @@ export const typeDefs = `#graphql
     type Query {
         subscriptions: [Subscription]
     }
+
+    type Mutation {
+        addSubscription(title: String!, status: String!, tags: [String]!): Subscription
+    }
 `
