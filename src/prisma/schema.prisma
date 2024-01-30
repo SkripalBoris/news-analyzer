@@ -11,8 +11,15 @@ datasource db {
 }
 
 model Subscription {
-  id     Int      @id @default(autoincrement())
-  title  String   @unique
+  id     Int    @id @default(autoincrement())
+  title  String @unique
   status String
   tags   String
+}
+
+model NewsSource {
+  id    Int    @id @default(autoincrement())
+  title String @unique
+  url   String
+  type  String
 }

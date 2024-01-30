@@ -14,12 +14,21 @@ export const typeDefs = `#graphql
         image: String
     }
 
+    type NewsSource {
+        id: ID!
+        title: String!
+        url: String!
+        type: String!
+    }
+
     type Query {
         subscriptions: [Subscription]
         subscriptionDetails(id: ID!): Subscription
+        newSources: [NewsSource]
     }
 
     type Mutation {
         addSubscription(title: String!, status: String!, tags: [String]!): Subscription
+        addNewsSource(title: String!, url: String!, type: String!)
     }
 `

@@ -1,4 +1,5 @@
 import { Context } from '@/pages/api/graphql';
+import { addNewsSource, getNewsSources } from '@/services/news-source';
 import { createSubscription, getSubscription, getSubscriptions } from '@/services/subscription';
 import Parser from 'rss-parser';
 
@@ -29,11 +30,17 @@ export const resolvers = {
                 ...subscription,
                 articles
             }
+        },
+        newsSources: (_parent: any, _args: any, context: Context) => {
+            return getNewsSources(context.prisma)
         }
     },
     Mutation: {
         addSubscription: async (_parent: any, args: any, context: Context) => {
             return createSubscription(args, context.prisma)
+        },
+        addNewsSource: (_parent: any, args: any, context: Context) => {
+            return addNewsSource(args, context.prisma)
         }
     }
 }
