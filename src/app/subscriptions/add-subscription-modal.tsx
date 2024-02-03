@@ -23,7 +23,6 @@ export const AddSubscriptionModal: FC<AddSubscriptionModalProps> = ({ isOpen, on
             tags: []
         },
         onSubmit: (values, { resetForm }) => {
-            // alert(JSON.stringify(values, null, 2));
             addSubscription({
                 variables: {
                     title: values.title,
